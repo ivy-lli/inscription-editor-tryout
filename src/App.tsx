@@ -2,11 +2,15 @@ import React from 'react';
 import TabsDemo, { TabProps } from './components/TabsDemo';
 import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
+import Editor from './components/Editor';
 
 function App() {
-  const tabsList: TabProps[] = [{id: 'name', label: 'Name', value: 'name', content: <div>Content of Name</div>}, 
-  {id: 'call', label: 'Call', value: 'call', content: <div>Content of Name</div>, state: 'dirty'},
-  {id: 'result', label: 'Result', value: 'result', content: <div>Content of Name</div>}];
+  const tabsList: TabProps[] = [
+    {id: 'name', label: 'Name', value: 'name', content: <div>Content of Name</div>}, 
+    {id: 'call', label: 'Call', value: 'call', content: <div>Content of Call</div>, state: 'dirty'},
+    {id: 'result', label: 'Result', value: 'result', content: <div>Content of Result</div>, state: 'error'}
+  ];
 
   return (
     <div className="App">
@@ -23,7 +27,8 @@ function App() {
         >
           Learn React
         </a>
-        <TabsDemo tabsList={tabsList} value={tabsList[0].value}/>
+        <Editor tabsList={tabsList} activeTab={tabsList[0].value}/>
+        {/* <TabsDemo tabsList={tabsList} value={tabsList[0].value}/> */}
       </header>
     </div>
   );
