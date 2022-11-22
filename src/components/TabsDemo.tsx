@@ -10,6 +10,14 @@ export interface TabProps {
   state?: string
 }
 
+export enum TabState {
+  EMPTY,
+  CONFIGURED,
+  DIRTY,
+  WARNING,
+  ERROR
+}
+
 export interface TabsDemoProps {
   tabsList: TabProps[],
   value: string

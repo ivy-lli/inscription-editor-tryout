@@ -1,19 +1,9 @@
 import { Tabs, TabsContent } from "@radix-ui/react-tabs";
 import { Separator } from "@radix-ui/react-separator";
-import Header from "./Header";
+import Header, { HeaderProps } from "./Header";
 import './Editor.css';
 
-export interface TabProps {
-  id: string,
-  label: string,
-  content: JSX.Element,
-  value: string,
-  state?: string
-}
-
-export interface EditorProps {
-  tabsList: TabProps[],
-  activeTab?: string
+export interface EditorProps extends HeaderProps {
 };
 
 const Editor = (props: EditorProps) => {
