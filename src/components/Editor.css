@@ -10,3 +10,11 @@
   flex-direction: column;
   margin-top: 1rem;
 }
+
+.separator-root {
+  background-color: #5A5A5A;
+}
+.separator-root[data-orientation='horizontal'] {
+  height: 1px;
+  width: 100%;
+}
