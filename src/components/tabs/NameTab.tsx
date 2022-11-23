@@ -1,5 +1,5 @@
-import { Label } from '@radix-ui/react-label';
 import React from 'react';
+import LabelInput from './LabelInput';
 import './NameTab.css';
 
 const NameTab = () => (
@@ -10,15 +10,11 @@ const NameTab = () => (
     <LabelInput label='Description' htmlFor='description'>
       <textarea className="input" id="description" defaultValue="" />
     </LabelInput>
-  </div>
-)
-
-const LabelInput = (props: {label: string, htmlFor: string, children: JSX.Element}) => (
-  <div className='name-column'>
-    <Label className="label" htmlFor="displayName">
-      {props.label}
-    </Label>
-    {props.children}
+    <LabelInput label='Documents' htmlFor='documents'>
+      {/* todo: documents list */}
+      <textarea className="input" id="documents" defaultValue="some documents" />
+    </LabelInput>
+    {/* todo: tags */}
   </div>
 )
 
