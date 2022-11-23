@@ -1,9 +1,14 @@
 .name-tab {
   display: flex;
-  gap: 1rem;
   flex-direction: column;
-  align-items: start;
+  gap: 1rem;
   color: #BABABA;
+}
+.name-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 
 .label {
@@ -21,6 +26,9 @@
   color: white;
   text-align: start;
   padding: 10px;
+}
+textarea.input {
+  resize: vertical;
 }
 .input:focus {
   box-shadow: 0 0 0 2px black;
