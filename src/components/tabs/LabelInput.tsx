@@ -3,7 +3,7 @@ import './LabelInput.css';
 
 const LabelInput = (props: {label: string, htmlFor: string, children: JSX.Element}) => (
   <div className='label-input-column'>
-    <Label className="label" htmlFor="displayName">
+    <Label className="label" htmlFor={props.htmlFor}>
       {props.label}
     </Label>
     {props.children}

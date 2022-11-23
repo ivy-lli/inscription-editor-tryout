@@ -1,6 +1,7 @@
 import React, { useState } from "react"
-import {useCombobox} from 'downshift'
+import { useCombobox } from 'downshift'
 import './CallTab.css';
+import LabelInput from "./LabelInput";
 
 const callables: Callable[] = [
   {value: 'workflow.humantask.AcceptRequest', process: 'AcceptRequest', project: 'workflow.humantask [workflow-demos]'},
@@ -25,15 +26,18 @@ const CallTab = () => (
 
 const SelectCallable = (props: {callables: Callable[]}) => {
   const itemFilter = (item: Callable, input?: string) => {
+    if (!input) {
+      return true;
+    }
+    var filter = input.toLowerCase();
     return (
-      !input ||
-      item.value.toLowerCase().includes(input) ||
-      item.process.toLowerCase().includes(input) ||
-      item.project.toLowerCase().includes(input)
+      item.value.toLowerCase().includes(filter) ||
+      item.process.toLowerCase().includes(filter) ||
+      item.project.toLowerCase().includes(filter)
     )
   }
 
-  const [items, setItems] = useState(callables);
+  const [items, setItems] = useState(props.callables);
   const {
     isOpen,
     getToggleButtonProps,
@@ -44,8 +48,13 @@ const SelectCallable = (props: {callables: Callable[]}) => {
     getItemProps,
     selectedItem
   } = useCombobox({
-    onInputValueChange({inputValue}) {
-      setItems(callables.filter(callable => itemFilter(callable, inputValue)))
+    onSelectedItemChange() {
+      setItems(callables)
+    },
+    onInputValueChange(change) {
+      if (change.type !== '__item_click__') {
+        setItems(callables.filter(callable => itemFilter(callable, change.inputValue)))
+      }
     },
     items,
     itemToString(item) {
@@ -55,17 +64,14 @@ const SelectCallable = (props: {callables: Callable[]}) => {
 
   return (
     <div className="combobox">
-      <div className="label-input-column">
-        <label className="label" {...getLabelProps()}>
-          User Dialog Start
-        </label>
+      <LabelInput label='User Dialog Start' htmlFor='dialogSelect' {...getLabelProps()}>
         <div className="combobox-input">
           <input placeholder="Select callable" className="input" {...getInputProps()} />
           <button aria-label="toggle menu" className="combobox-button" type="button" {...getToggleButtonProps()}>
             {isOpen ? <>&#8593;</> : <>&#8595;</>}
           </button>
         </div>
-      </div>
+      </LabelInput>
       <ul {...getMenuProps()} className="combobox-menu">
         {isOpen && items.map((item, index) => (
           <li className={`combobox-menu-entry ${highlightedIndex === index ? 'hover' : ''} ${selectedItem?.value === item.value ? 'selected' : ''}`}
