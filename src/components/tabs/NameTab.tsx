@@ -1,4 +1,5 @@
 import React from 'react';
+import CollapsiblePart from './CollapsiblePart';
 import LabelInput from './LabelInput';
 import './NameTab.css';
 
@@ -10,11 +11,12 @@ const NameTab = () => (
     <LabelInput label='Description' htmlFor='description'>
       <textarea className="input" id="description" defaultValue="" />
     </LabelInput>
-    <LabelInput label='Documents' htmlFor='documents'>
-      {/* todo: documents list */}
-      <textarea className="input" id="documents" defaultValue="some documents" />
+    <LabelInput label='Means / Documents' htmlFor='documents'>
+      <textarea className="input" id="documents" defaultValue="todo: documents list" />
     </LabelInput>
-    {/* todo: tags */}
+    <CollapsiblePart collapsibleLabel='Tags' defaultOpen={false}>
+      <p>todo: tags</p>
+    </CollapsiblePart>
   </div>
 )
 
