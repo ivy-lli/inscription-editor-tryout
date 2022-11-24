@@ -10,7 +10,7 @@ const CallTab = () => {
         <p>todo: mappings</p>
       </CollapsiblePart>
     </div>
-  )
-}
+  );
+};
 
 export default CallTab;

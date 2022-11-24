@@ -1,5 +1,3 @@
-const ResultTab = () => (
-  <div>Content of Result</div>
-)
+const ResultTab = () => <div>Content of Result</div>;
 
 export default ResultTab;

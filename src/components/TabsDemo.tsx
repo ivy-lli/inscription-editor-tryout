@@ -1,13 +1,13 @@
 import React from 'react';
-import {Tabs, TabsContent, TabsList, TabsTrigger} from '@radix-ui/react-tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@radix-ui/react-tabs';
 import './TabsDemo.css';
 
 export interface TabProps {
-  id: string,
-  label: string,
-  content: JSX.Element,
-  value: string,
-  state?: string
+  id: string;
+  label: string;
+  content: JSX.Element;
+  value: string;
+  state?: string;
 }
 
 export enum TabState {
@@ -19,9 +19,9 @@ export enum TabState {
 }
 
 export interface TabsDemoProps {
-  tabsList: TabProps[],
-  value: string
-};
+  tabsList: TabProps[];
+  value: string;
+}
 
 const TabsDemo = (props: TabsDemoProps) => (
   <Tabs className='tabs-root' defaultValue={props.value}>
