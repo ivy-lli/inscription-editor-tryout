@@ -1,8 +1,9 @@
 import './SelectDialog.css';
 import CollapsiblePart from './CollapsiblePart';
 import Combobox, { ComboboxItem } from './Combobox';
+import { CallData } from './CallTab';
 
-const SelectDialog = () => {
+const SelectDialog = (props: { data: CallData; onChange: (change: CallData) => void }) => {
   const callables: Callable[] = [
     { value: 'workflow.humantask.AcceptRequest', process: 'AcceptRequest', project: 'workflow.humantask [workflow-demos]' },
     { value: 'workflow.credit.ApproveLevel1', process: 'ApproveLevel1', project: 'workflow.credit [workflow-demos]' },
@@ -18,10 +19,19 @@ const SelectDialog = () => {
     { value: 'demo.test9', process: 'test9', project: 'demo [demo]' }
   ];
   const starts: Start[] = [{ value: 'start():ProcurementRequest,LogEntry' }, { value: 'start2()' }, { value: 'test(String):boolean' }];
+
+  function handleDialogChange(change: string) {
+    props.onChange({ ...props.data, dialog: change });
+  }
+
+  function handleStartChange(change: string) {
+    props.onChange({ ...props.data, start: change });
+  }
+
   return (
     <CollapsiblePart collapsibleLabel='User Dialog Start' defaultOpen={true}>
-      <CallableCombobox callables={callables} />
-      <StartCombobox starts={starts} />
+      <CallableCombobox callables={callables} value={props.data.dialog} onChange={handleDialogChange} />
+      <StartCombobox starts={starts} value={props.data.start} onChange={handleStartChange} />
     </CollapsiblePart>
   );
 };
@@ -37,13 +47,13 @@ function isCallable(item: ComboboxItem): item is Callable {
 
 interface Start extends ComboboxItem {}
 
-const StartCombobox = (props: { starts: Start[] }) => {
+const StartCombobox = (props: { starts: Start[]; value: string; onChange: (change: any) => void }) => {
   const children = (item: Start) => <span>➡️ {item.value}</span>;
 
-  return <Combobox label='Start' items={props.starts} children={children} />;
+  return <Combobox label='Start' items={props.starts} children={children} value={props.value} onChange={props.onChange} />;
 };
 
-const CallableCombobox = (props: { callables: Callable[] }) => {
+const CallableCombobox = (props: { callables: Callable[]; value: string; onChange: (change: any) => void }) => {
   const itemFilter = (item: ComboboxItem, input?: string) => {
     if (!input) {
       return true;
@@ -71,7 +81,16 @@ const CallableCombobox = (props: { callables: Callable[] }) => {
     );
   };
 
-  return <Combobox label='Dialog' items={props.callables} children={children} itemFilter={itemFilter} />;
+  return (
+    <Combobox
+      label='Dialog'
+      items={props.callables}
+      children={children}
+      itemFilter={itemFilter}
+      value={props.value}
+      onChange={props.onChange}
+    />
+  );
 };
 
 export default SelectDialog;

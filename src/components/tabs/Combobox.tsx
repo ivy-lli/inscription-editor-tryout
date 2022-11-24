@@ -11,6 +11,8 @@ const Combobox = (props: {
   items: ComboboxItem[];
   itemFilter?: (item: ComboboxItem, input?: string) => boolean;
   children: (item: ComboboxItem) => JSX.Element;
+  value: string;
+  onChange: (change: string) => void;
 }) => {
   const itemFilter = props.itemFilter
     ? props.itemFilter
@@ -25,8 +27,9 @@ const Combobox = (props: {
   const [items, setItems] = useState(props.items);
   const { isOpen, getToggleButtonProps, getLabelProps, getMenuProps, getInputProps, highlightedIndex, getItemProps, selectedItem } =
     useCombobox({
-      onSelectedItemChange() {
+      onSelectedItemChange(change) {
         setItems(props.items);
+        props.onChange(change.inputValue ?? '');
       },
       onInputValueChange(change) {
         if (change.type !== '__item_click__') {
@@ -36,7 +39,8 @@ const Combobox = (props: {
       items,
       itemToString(item) {
         return item?.value ?? '';
-      }
+      },
+      initialSelectedItem: { value: props.value }
     });
 
   return (

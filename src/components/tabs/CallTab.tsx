@@ -2,10 +2,15 @@ import './CallTab.css';
 import CollapsiblePart from './CollapsiblePart';
 import SelectDialog from './SelectDialog';
 
-const CallTab = () => {
+export interface CallData {
+  dialog: string;
+  start: string;
+}
+
+const CallTab = (props: { data: CallData; onChange: (change: CallData) => void }) => {
   return (
     <div className='call-tab'>
-      <SelectDialog />
+      <SelectDialog data={props.data} onChange={props.onChange} />
       <CollapsiblePart collapsibleLabel='Mapping of process to dialog data' defaultOpen={false}>
         <p>todo: mappings</p>
       </CollapsiblePart>
