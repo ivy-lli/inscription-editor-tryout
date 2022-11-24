@@ -2,7 +2,7 @@ import './SelectDialog.css';
 import CollapsiblePart from './CollapsiblePart';
 import Combobox, { ComboboxItem } from './Combobox';
 import { CallData } from './CallTab';
-import { MessageSeverity } from '../../data/message';
+import { Message, MessageSeverity } from '../../data/message';
 
 const SelectDialog = (props: { data: CallData; onChange: (change: CallData) => void }) => {
   const callables: Callable[] = [
@@ -26,7 +26,12 @@ const SelectDialog = (props: { data: CallData; onChange: (change: CallData) => v
 
   return (
     <CollapsiblePart collapsibleLabel='User Dialog Start' defaultOpen={true}>
-      <CallableCombobox callables={callables} value={props.data.dialog} onChange={handleDialogChange} />
+      <CallableCombobox
+        callables={callables}
+        value={props.data.dialog}
+        onChange={handleDialogChange}
+        message={props.data.messages.get('dialog')}
+      />
       <StartCombobox starts={starts} value={props.data.start} onChange={handleStartChange} />
     </CollapsiblePart>
   );
@@ -49,7 +54,7 @@ const StartCombobox = (props: { starts: Start[]; value: string; onChange: (chang
   return <Combobox label='Start' items={props.starts} children={children} value={props.value} onChange={props.onChange} />;
 };
 
-const CallableCombobox = (props: { callables: Callable[]; value: string; onChange: (change: any) => void }) => {
+const CallableCombobox = (props: { callables: Callable[]; value: string; onChange: (change: any) => void; message?: Message }) => {
   const itemFilter = (item: ComboboxItem, input?: string) => {
     if (!input) {
       return true;
@@ -85,6 +90,7 @@ const CallableCombobox = (props: { callables: Callable[]; value: string; onChang
       itemFilter={itemFilter}
       value={props.value}
       onChange={props.onChange}
+      message={props.message}
     />
   );
 };

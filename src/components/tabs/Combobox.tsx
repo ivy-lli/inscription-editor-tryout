@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useCombobox } from 'downshift';
 import LabelInput from './LabelInput';
+import { Message } from '../../data/message';
 
 export interface ComboboxItem {
   value: string;
@@ -13,6 +14,7 @@ const Combobox = (props: {
   children: (item: ComboboxItem) => JSX.Element;
   value: string;
   onChange: (change: string) => void;
+  message?: Message;
 }) => {
   const itemFilter = props.itemFilter
     ? props.itemFilter
@@ -45,7 +47,7 @@ const Combobox = (props: {
 
   return (
     <div className='combobox'>
-      <LabelInput label={props.label} htmlFor='input' {...getLabelProps()}>
+      <LabelInput label={props.label} htmlFor='input' {...getLabelProps()} message={props.message}>
         <div className='combobox-input'>
           <input id='input' placeholder={`Select ${props.label}`} className='input' {...getInputProps()} />
           <button aria-label='toggle menu' className='combobox-button' type='button' {...getToggleButtonProps()}>

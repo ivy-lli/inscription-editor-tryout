@@ -12,3 +12,6 @@
 .input-message.input-error {
   color: #ff796f;
 }
+.input-message.input-warning {
+  color: #ff9f46;
+}
