@@ -9,13 +9,9 @@ export interface NameData {
 }
 
 const NameTab = (props: { data: NameData; onChange: (change: NameData) => void }) => {
-  function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
-    props.onChange({ ...props.data, name: event.target.value });
-  }
-
-  function handleDescChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => props.onChange({ ...props.data, name: event.target.value });
+  const handleDescChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
     props.onChange({ ...props.data, description: event.target.value });
-  }
 
   return (
     <div className='name-tab'>

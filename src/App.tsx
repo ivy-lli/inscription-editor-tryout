@@ -9,23 +9,27 @@ import { TabProps, TabState } from './components/Header';
 
 function App() {
   const [nameData, setNameData] = useState({ name: 'test name', description: 'test desc' } as NameData);
-  function handleNameDataChange(change: NameData) {
+  const [nameTab, setNameTab] = useState({ state: TabState.EMPTY });
+  const handleNameDataChange = (change: NameData) => {
     setNameData(change);
-  }
+    setNameTab({ state: TabState.DIRTY });
+  };
+
   const [callData, setCallData] = useState({ dialog: '', start: '' } as CallData);
-  function handleCallDataChange(change: CallData) {
+  const [callTab, setCallTab] = useState({ state: TabState.WARNING });
+  const handleCallDataChange = (change: CallData) => {
     setCallData(change);
-  }
+    setCallTab({ state: TabState.DIRTY });
+  };
+
   const tabsList: TabProps[] = [
-    { id: 'name', label: 'Name', value: 'name', content: <NameTab data={nameData} onChange={handleNameDataChange} /> },
+    { name: 'Name', state: nameTab.state, content: <NameTab data={nameData} onChange={handleNameDataChange} /> },
     {
-      id: 'call',
-      label: 'Call',
-      value: 'call',
-      content: <CallTab data={callData} onChange={handleCallDataChange} />,
-      state: TabState.DIRTY
+      name: 'Call',
+      state: callTab.state,
+      content: <CallTab data={callData} onChange={handleCallDataChange} />
     },
-    { id: 'result', label: 'Result', value: 'result', content: <ResultTab />, state: TabState.ERROR }
+    { name: 'Result', state: TabState.ERROR, content: <ResultTab /> }
   ];
 
   return (
@@ -43,7 +47,7 @@ function App() {
         >
           Learn React
         </a> */}
-        <Editor title='Inscribe User Dialog' status='Enter Request' tabsList={tabsList} activeTab={tabsList[0].value} />
+        <Editor title='Inscribe User Dialog' status='Enter Request' tabsList={tabsList} activeTab={tabsList[0].name} />
         {/* <TabsDemo tabsList={tabsList} value={tabsList[0].value}/> */}
       </header>
     </div>

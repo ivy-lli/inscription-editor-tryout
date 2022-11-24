@@ -12,7 +12,7 @@ const Editor = (props: EditorProps) => {
         <Header {...props} />
         <Separator className='separator-root' style={{ margin: '15px 0' }} />
         {props.tabsList.map((tab, index) => (
-          <TabsContent key={tab.id || `${index}-${tab.value}`} className='tabs-content' value={tab.value}>
+          <TabsContent key={`${index}-${tab.name}`} className='tabs-content' value={tab.name}>
             {tab.content}
           </TabsContent>
         ))}

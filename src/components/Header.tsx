@@ -10,11 +10,9 @@ export interface HeaderProps {
 }
 
 export interface TabProps {
-  id: string;
-  label: string;
+  name: string;
   content: JSX.Element;
-  value: string;
-  state?: TabState;
+  state: TabState;
 }
 
 export enum TabState {
@@ -33,9 +31,9 @@ const Header = (props: HeaderProps) => (
     </div>
     <TabsList className='tabs-list'>
       {props.tabsList.map((tab, index) => (
-        <TabsTrigger key={tab.id || `${index}-${tab.value}`} className='tabs-trigger' value={tab.value}>
+        <TabsTrigger key={`${index}-${tab.name}`} className='tabs-trigger' value={tab.name}>
           <span className='dirty-state' data-state={tab.state ?? TabState.EMPTY} />
-          {tab.label}
+          {tab.name}
         </TabsTrigger>
       ))}
     </TabsList>
