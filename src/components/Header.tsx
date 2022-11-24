@@ -1,5 +1,6 @@
 import { TabsList, TabsTrigger } from '@radix-ui/react-tabs';
-import { Message } from '../data/message';
+import { useEffect, useState } from 'react';
+import { Message, MessageSeverity } from '../data/message';
 import editorIcon from '../icons/user-dialog.svg';
 import './Header.css';
 
@@ -22,6 +23,19 @@ export enum TabState {
   DIRTY = 'dirty',
   WARNING = 'warning',
   ERROR = 'error'
+}
+
+export function useHeaderStatus(defaultStatus: string, tabMessages: Map<string, Message>[]): [Message[]] {
+  const [headerStatus, setHeaderStatus] = useState([] as Message[]);
+  useEffect(() => {
+    const messages = tabMessages.flatMap(tab => Array.from(tab.values())).concat();
+    if (messages.length > 0) {
+      setHeaderStatus(messages);
+    } else {
+      setHeaderStatus([{ field: 'name', severity: MessageSeverity.INFO, message: defaultStatus }]);
+    }
+  }, [defaultStatus, tabMessages]);
+  return [headerStatus];
 }
 
 const Header = (props: HeaderProps) => (

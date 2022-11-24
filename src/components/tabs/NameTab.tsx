@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Message, MessageSeverity } from '../../data/message';
+import { TabState } from '../Header';
 import CollapsiblePart from './CollapsiblePart';
 import LabelInput from './LabelInput';
 import './NameTab.css';
@@ -8,6 +9,20 @@ export interface NameData {
   name: string;
   description: string;
   messages: Map<string, Message>;
+}
+
+export function useNameTab(): [NameData, TabState, (change: NameData) => void] {
+  const [nameData, setNameData] = useState({ name: 'test name', description: 'test desc', messages: new Map() } as NameData);
+  const [nameTab, setNameTab] = useState(TabState.EMPTY);
+  const handleNameDataChange = (change: NameData) => {
+    setNameData(change);
+    if (change.messages.size > 0) {
+      setNameTab(TabState.ERROR);
+    } else {
+      setNameTab(TabState.DIRTY);
+    }
+  };
+  return [nameData, nameTab, handleNameDataChange];
 }
 
 const NameTab = (props: { data: NameData; onChange: (change: NameData) => void }) => {
