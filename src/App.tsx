@@ -12,7 +12,11 @@ function App() {
   const [nameTab, setNameTab] = useState({ state: TabState.EMPTY });
   const handleNameDataChange = (change: NameData) => {
     setNameData(change);
-    setNameTab({ state: TabState.DIRTY });
+    if (change.name.length === 0) {
+      setNameTab({ state: TabState.ERROR });
+    } else {
+      setNameTab({ state: TabState.DIRTY });
+    }
   };
 
   const [callData, setCallData] = useState({ dialog: '', start: '' } as CallData);
