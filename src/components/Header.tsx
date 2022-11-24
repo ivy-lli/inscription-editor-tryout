@@ -1,10 +1,11 @@
 import { TabsList, TabsTrigger } from '@radix-ui/react-tabs';
+import { Message } from '../data/message';
 import editorIcon from '../icons/user-dialog.svg';
 import './Header.css';
 
 export interface HeaderProps {
   title: string;
-  status: string;
+  status: Message[];
   tabsList: TabProps[];
   activeTab?: string;
 }
@@ -24,21 +25,25 @@ export enum TabState {
 }
 
 const Header = (props: HeaderProps) => (
-  <div className='header'>
-    <div className='header-title'>
-      <div className='header-editor'>{props.title}</div>
-      <div className='header-status'>{props.status}</div>
+  <>
+    <div className='header'>
+      <div className='header-title'>
+        <div className='header-editor'>{props.title}</div>
+      </div>
+      <TabsList className='tabs-list'>
+        {props.tabsList.map((tab, index) => (
+          <TabsTrigger key={`${index}-${tab.name}`} className='tabs-trigger' value={tab.name}>
+            <span className='dirty-state' data-state={tab.state ?? TabState.EMPTY} />
+            {tab.name}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      <img src={editorIcon} className='header-icon' alt='icon' />
     </div>
-    <TabsList className='tabs-list'>
-      {props.tabsList.map((tab, index) => (
-        <TabsTrigger key={`${index}-${tab.name}`} className='tabs-trigger' value={tab.name}>
-          <span className='dirty-state' data-state={tab.state ?? TabState.EMPTY} />
-          {tab.name}
-        </TabsTrigger>
-      ))}
-    </TabsList>
-    <img src={editorIcon} className='header-icon' alt='icon' />
-  </div>
+    {props.status.map(state => (
+      <div className={`header-status message-${state.severity}`}>{state.message}</div>
+    ))}
+  </>
 );
 
 export default Header;

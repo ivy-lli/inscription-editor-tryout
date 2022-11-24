@@ -2,6 +2,7 @@ import './SelectDialog.css';
 import CollapsiblePart from './CollapsiblePart';
 import Combobox, { ComboboxItem } from './Combobox';
 import { CallData } from './CallTab';
+import { MessageSeverity } from '../../data/message';
 
 const SelectDialog = (props: { data: CallData; onChange: (change: CallData) => void }) => {
   const callables: Callable[] = [
@@ -20,13 +21,8 @@ const SelectDialog = (props: { data: CallData; onChange: (change: CallData) => v
   ];
   const starts: Start[] = [{ value: 'start():ProcurementRequest,LogEntry' }, { value: 'start2()' }, { value: 'test(String):boolean' }];
 
-  function handleDialogChange(change: string) {
-    props.onChange({ ...props.data, dialog: change });
-  }
-
-  function handleStartChange(change: string) {
-    props.onChange({ ...props.data, start: change });
-  }
+  const handleDialogChange = (change: string) => props.onChange({ ...props.data, dialog: change });
+  const handleStartChange = (change: string) => props.onChange({ ...props.data, start: change });
 
   return (
     <CollapsiblePart collapsibleLabel='User Dialog Start' defaultOpen={true}>

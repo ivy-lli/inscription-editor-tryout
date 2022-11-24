@@ -1,4 +1,5 @@
 import React from 'react';
+import { Message, MessageSeverity } from '../../data/message';
 import CollapsiblePart from './CollapsiblePart';
 import LabelInput from './LabelInput';
 import './NameTab.css';
@@ -6,16 +7,25 @@ import './NameTab.css';
 export interface NameData {
   name: string;
   description: string;
+  messages: Map<string, Message>;
 }
 
 const NameTab = (props: { data: NameData; onChange: (change: NameData) => void }) => {
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => props.onChange({ ...props.data, name: event.target.value });
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const data = { ...props.data, name: event.target.value };
+    if (data.name.length === 0) {
+      data.messages.set('name', { field: 'name', severity: MessageSeverity.ERROR, message: '🚫 Name must not be empty' });
+    } else {
+      data.messages.delete('name');
+    }
+    props.onChange(data);
+  };
   const handleDescChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
     props.onChange({ ...props.data, description: event.target.value });
 
   return (
     <div className='name-tab'>
-      <LabelInput label='Display name' htmlFor='displayName'>
+      <LabelInput label='Display name' htmlFor='displayName' message={props.data.messages.get('name')}>
         <input className='input' type='text' id='displayName' value={props.data.name} onChange={handleNameChange} />
       </LabelInput>
       <LabelInput label='Description' htmlFor='description'>

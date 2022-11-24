@@ -11,7 +11,6 @@ button {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-left: 4px;
 }
 .header-editor {
   font-weight: 600;
@@ -19,9 +18,16 @@ button {
   line-height: 24px;
 }
 .header-status {
+  padding-top: 0.5rem;
   font-weight: 400;
   font-size: 10px;
   line-height: 10px;
+}
+.header-status.message-error {
+  color: #ff796f;
+}
+.header-status.message-warning {
+  color: #ff9f46;
 }
 .header-icon {
   width: 1.5rem;

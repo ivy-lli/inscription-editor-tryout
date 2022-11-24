@@ -4,7 +4,11 @@
   align-items: flex-start;
   gap: 0.5rem;
 }
-.label {
+.label,
+.input-message {
   padding-left: 4px;
   font-size: 10px;
+}
+.input-message.input-error {
+  color: #ff796f;
 }
