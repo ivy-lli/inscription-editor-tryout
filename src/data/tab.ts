@@ -9,6 +9,12 @@ export enum TabState {
   ERROR = 'error'
 }
 
+export interface TabProps {
+  name: string;
+  content: JSX.Element;
+  state: TabState;
+}
+
 export function useTabState(initData: string, data: any, messages: Message[]): TabState {
   const [tabState, setTabState] = useState(TabState.EMPTY);
   useEffect(() => {
