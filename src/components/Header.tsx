@@ -1,6 +1,5 @@
 import { TabsList, TabsTrigger } from '@radix-ui/react-tabs';
-import { useEffect, useState } from 'react';
-import { Message, MessageSeverity } from '../data/message';
+import { Message } from '../data/message';
 import editorIcon from '../icons/user-dialog.svg';
 import './Header.css';
 
