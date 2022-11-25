@@ -40,5 +40,5 @@ export function useUserDialogEditor(): EditorProps {
       setHeaderState([{ field: 'name', severity: MessageSeverity.INFO, message: nameTabProps.data.name }]);
     }
   }, [nameTabProps.data, nameTabProps.messages, callTabProps.messages]);
-  return { title: 'User Dialog', headerState: headerState, tabs: tabs };
+  return { title: 'Inscribe User Dialog', headerState: headerState, tabs: tabs };
 }
