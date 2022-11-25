@@ -1,10 +1,10 @@
 import './SelectDialog.css';
 import CollapsiblePart from './CollapsiblePart';
 import Combobox, { ComboboxItem } from './Combobox';
-import { CallData } from './CallTab';
-import { Message, MessageSeverity } from '../../data/message';
+import { Message, MessageUtil } from '../../data/message';
+import { CallTabData } from '../../data/call-tab';
 
-const SelectDialog = (props: { data: CallData; onChange: (change: CallData) => void }) => {
+const SelectDialog = (props: { data: CallTabData; onChange: (change: CallTabData) => void; messages: Message[] }) => {
   const callables: Callable[] = [
     { value: 'workflow.humantask.AcceptRequest', process: 'AcceptRequest', project: 'workflow.humantask [workflow-demos]' },
     { value: 'workflow.credit.ApproveLevel1', process: 'ApproveLevel1', project: 'workflow.credit [workflow-demos]' },
@@ -30,7 +30,7 @@ const SelectDialog = (props: { data: CallData; onChange: (change: CallData) => v
         callables={callables}
         value={props.data.dialog}
         onChange={handleDialogChange}
-        message={props.data.messages.get('dialog')}
+        message={MessageUtil.findMessage(props.messages, 'dialog')}
       />
       <StartCombobox starts={starts} value={props.data.start} onChange={handleStartChange} />
     </CollapsiblePart>

@@ -9,3 +9,9 @@ export interface Message {
   severity: MessageSeverity;
   message: string;
 }
+
+export class MessageUtil {
+  public static findMessage(messages: Message[], field: string): Message | undefined {
+    return messages.find(message => message.field === field);
+  }
+}
