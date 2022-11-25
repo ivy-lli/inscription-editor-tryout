@@ -14,6 +14,7 @@ const Tags = (props: { tags: string[]; onChange: (tags: string[]) => void }) => 
     setOpen(open);
     if (!open && newTag.length > 0) {
       props.tags.push(newTag);
+      props.onChange(props.tags);
     }
     setNewTag('');
   };
