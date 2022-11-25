@@ -30,6 +30,6 @@ export function useTabState(initData: string, data: any, messages: Message[]): T
     } else if (warnings) {
       setTabState(TabState.WARNING);
     }
-  }, [messages, data]);
+  }, [messages, data, initData]);
   return tabState;
 }

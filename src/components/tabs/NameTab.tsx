@@ -3,8 +3,8 @@ import { Message, MessageUtil } from '../../data/message';
 import { NameTabData } from '../../data/name-tab';
 import CollapsiblePart from './CollapsiblePart';
 import LabelInput from './LabelInput';
-import './NameTab.css';
 import Tags from './Tags';
+import './NameTab.css';
 
 const NameTab = (props: { data: NameTabData; onChange: (change: NameTabData) => void; messages: Message[] }) => {
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => props.onChange({ ...props.data, name: event.target.value });

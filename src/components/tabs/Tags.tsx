@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useKeyboard } from 'react-aria';
 import * as Popover from '@radix-ui/react-popover';
-import './Tags.css';
 import LabelInput from './LabelInput';
+import './Tags.css';
 
 const Tags = (props: { tags: string[]; onChange: (tags: string[]) => void }) => {
   const handleRemoveTag = (removeTag: string) => {

@@ -1,8 +1,8 @@
-import './SelectDialog.css';
 import CollapsiblePart from './CollapsiblePart';
 import Combobox, { ComboboxItem } from './Combobox';
 import { Message, MessageUtil } from '../../data/message';
 import { CallTabData } from '../../data/call-tab';
+import './SelectDialog.css';
 
 const SelectDialog = (props: { data: CallTabData; onChange: (change: CallTabData) => void; messages: Message[] }) => {
   const callables: Callable[] = [

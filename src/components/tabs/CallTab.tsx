@@ -1,8 +1,8 @@
 import CollapsiblePart from './CollapsiblePart';
 import SelectDialog from './SelectDialog';
 import { CallTabData } from '../../data/call-tab';
-import './CallTab.css';
 import { Message } from '../../data/message';
+import './CallTab.css';
 
 const CallTab = (props: { data: CallTabData; onChange: (change: CallTabData) => void; messages: Message[] }) => {
   return (
