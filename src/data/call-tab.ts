@@ -17,7 +17,7 @@ export interface CallTabProps {
 export function useCallTab(initData: CallTabData, initMessages: Message[] = []): CallTabProps {
   const [data, setData] = useState(initData);
   const [messages, setMessages] = useState(initMessages);
-  const tabState = useTabState(messages);
+  const tabState = useTabState(JSON.stringify(initData), data, messages);
   useEffect(() => {
     const msgs: Message[] = [];
     if (data.dialog.length === 0) {

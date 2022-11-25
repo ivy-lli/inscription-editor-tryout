@@ -18,7 +18,7 @@ export interface NameTabProps {
 export function useNameTab(initData: NameTabData, initMessages: Message[] = []): NameTabProps {
   const [data, setData] = useState(initData);
   const [messages, setMessages] = useState(initMessages);
-  const tabState = useTabState(messages);
+  const tabState = useTabState(JSON.stringify(initData), data, messages);
   useEffect(() => {
     const msgs: Message[] = [];
     if (data.name.length === 0) {
