@@ -25,19 +25,6 @@ export enum TabState {
   ERROR = 'error'
 }
 
-export function useHeaderStatus(defaultStatus: string, tabMessages: Map<string, Message>[]): [Message[]] {
-  const [headerStatus, setHeaderStatus] = useState([] as Message[]);
-  useEffect(() => {
-    const messages = tabMessages.flatMap(tab => Array.from(tab.values())).concat();
-    if (messages.length > 0) {
-      setHeaderStatus(messages);
-    } else {
-      setHeaderStatus([{ field: 'name', severity: MessageSeverity.INFO, message: defaultStatus }]);
-    }
-  }, [defaultStatus, tabMessages]);
-  return [headerStatus];
-}
-
 const Header = (props: HeaderProps) => (
   <>
     <div className='header'>
@@ -54,8 +41,10 @@ const Header = (props: HeaderProps) => (
       </TabsList>
       <img src={editorIcon} className='header-icon' alt='icon' />
     </div>
-    {props.status.map(state => (
-      <div className={`header-status message-${state.severity}`}>{state.message}</div>
+    {props.status.map((state, index) => (
+      <div key={`${index}-${state.field}`} className={`header-status message-${state.severity}`}>
+        {state.message}
+      </div>
     ))}
   </>
 );
