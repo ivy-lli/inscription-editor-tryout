@@ -41,7 +41,7 @@ const Tags = (props: { tags: string[]; onChange: (tags: string[]) => void }) => 
       ))}
       <Popover.Root open={isOpen} onOpenChange={handleAddPopoverChange}>
         <Popover.Trigger asChild>
-          <button className='tag-add'>
+          <button className='tag-add' aria-label='Add mew tag'>
             <span className='tag-add-plus'>+</span>
             <span>Add</span>
           </button>
