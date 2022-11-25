@@ -5,7 +5,6 @@ button {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  color: #bababa;
 }
 .header-title {
   display: flex;
@@ -24,10 +23,10 @@ button {
   line-height: 10px;
 }
 .header-status.message-error {
-  color: #ff796f;
+  color: var(--error-color);
 }
 .header-status.message-warning {
-  color: #ff9f46;
+  color: var(--warning-color);
 }
 .header-icon {
   width: 1.5rem;
@@ -41,7 +40,7 @@ button {
 }
 .tabs-trigger {
   font-family: inherit;
-  background-color: #202020;
+  background-color: var(--button-bg);
   border-radius: 4px;
   padding: 6px 10px;
   height: 12px;
@@ -52,7 +51,7 @@ button {
   justify-content: center;
   font-size: 12px;
   line-height: 1;
-  color: #bababa;
+  color: var(--button-color);
   user-select: none;
 }
 .tabs-trigger[data-state='inactive'] {
@@ -66,7 +65,7 @@ button {
 }
 .tabs-trigger:focus {
   position: relative;
-  box-shadow: 0 0 0 2px black;
+  box-shadow: var(--focus-shadow);
 }
 
 .tabs-trigger .dirty-state {
@@ -74,17 +73,17 @@ button {
   width: 0.5rem;
   border-radius: 0.5rem;
   margin-right: 0.25rem;
-  background-color: #bababa;
+  background-color: var(--button-color);
 }
 .tabs-trigger .dirty-state[data-state='configured'] {
-  background-color: #75beff;
+  background-color: var(--info-color);
 }
 .tabs-trigger .dirty-state[data-state='dirty'] {
-  background-color: #1dca5a;
+  background-color: var(--success-color);
 }
 .tabs-trigger .dirty-state[data-state='warning'] {
-  background-color: #ff9f46;
+  background-color: var(--warning-color);
 }
 .tabs-trigger .dirty-state[data-state='error'] {
-  background-color: #ff796f;
+  background-color: var(--error-color);
 }

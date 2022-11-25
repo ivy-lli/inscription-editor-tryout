@@ -4,7 +4,7 @@
   font-size: 10px;
 }
 .tag {
-  background: #202020;
+  background: var(--input-bg);
   border-radius: 12px;
   padding: 6px 10px;
 }
@@ -15,13 +15,13 @@
   width: 10px;
   height: 10px;
   text-align: center;
-  color: #ff796f;
+  color: var(--error-color);
   font-size: 7px;
 }
 .tag-add {
   border-radius: 12px;
   padding: 4px 10px;
-  border: 1px dashed #bababa;
+  border: 1px dashed var(--button-color);
 }
 .tag-add-plus {
   margin-right: 0.5rem;
@@ -39,22 +39,22 @@
 }
 .tag-remove:focus,
 .tag-add:focus {
-  box-shadow: 0 0 0 2px black;
+  box-shadow: var(--focus-shadow);
 }
 
 .popover-content {
   border-radius: 4px;
   padding: 20px;
   width: 260px;
-  background-color: #2c2c2c;
-  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  background-color: var(--editor-bg);
+  box-shadow: var(--editor-shadow);
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity;
-  color: white;
+  color: var(--text-color);
 }
 .popover-content:focus {
-  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px, 0 0 0 2px var(--violet7);
+  box-shadow: var(--focus-shadow);
 }
 .popover-content[data-state='open'][data-side='top'] {
   animation-name: slideDownAndFade;
@@ -70,7 +70,7 @@
 }
 
 .popover-arrow {
-  fill: #2c2c2c;
+  fill: var(--editor-bg);
 }
 
 .popover-close {
@@ -82,16 +82,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--violet11);
+  color: var(--text-color);
   position: absolute;
   top: 5px;
   right: 5px;
 }
 .popover-close:hover {
-  background-color: #202020;
+  background-color: var(--button-bg);
 }
 .popover-close:focus {
-  box-shadow: 0 0 0 2px black;
+  box-shadow: var(--focus-shadow);
 }
 
 @keyframes slideUpAndFade {

@@ -10,8 +10,8 @@
   font-size: 10px;
 }
 .input-message.input-error {
-  color: #ff796f;
+  color: var(--error-color);
 }
 .input-message.input-warning {
-  color: #ff9f46;
+  color: var(--warning-color);
 }
