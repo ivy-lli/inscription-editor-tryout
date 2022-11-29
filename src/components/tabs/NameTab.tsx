@@ -1,9 +1,9 @@
 import React from 'react';
 import { Message, MessageUtil } from '../../data/message';
 import { NameTabData } from '../../data/name-tab';
-import CollapsiblePart from './CollapsiblePart';
-import LabelInput from './LabelInput';
-import Tags from './Tags';
+import CollapsiblePart from '../widgets/CollapsiblePart';
+import LabelInput from '../widgets/LabelInput';
+import Tags from '../widgets/Tags';
 import './NameTab.css';
 
 const NameTab = (props: { data: NameTabData; onChange: (change: NameTabData) => void; messages: Message[] }) => {
