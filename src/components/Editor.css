@@ -11,6 +11,10 @@
   --button-bg: #202020;
   --button-color: #bababa;
   --text-color: #bababa;
+  --table-bg: #202020;
+  --table-row-bg: #333333;
+
+  --border-radius: 4px;
   --focus-shadow: 0 0 0 1px var(--text-color);
 
   --error-color: #ff796f;
@@ -22,7 +26,7 @@
 .editor {
   background: var(--editor-bg);
   box-shadow: var(--editor-shadow);
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   padding: 1rem;
   color: var(--text-color);
 }
@@ -44,7 +48,7 @@
 /* Input fields*/
 .input {
   all: unset;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   background: var(--input-bg);
   width: calc(100% - 20px);
   font-size: 12px;

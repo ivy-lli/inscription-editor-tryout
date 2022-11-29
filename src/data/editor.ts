@@ -14,7 +14,23 @@ export interface EditorProps {
 }
 
 export function useUserDialogEditor(): EditorProps {
-  const nameTabProps = useNameTab({ name: 'test name', description: 'test desc', tags: ['bla', 'zag'] });
+  const nameTabProps = useNameTab({
+    name: 'test name',
+    description: 'test desc',
+    documents: [
+      {
+        description: 'Placeholder 1',
+        url: 'axonivy.com',
+        action: ''
+      },
+      {
+        description: 'Placeholder 2',
+        url: 'ivyteam.ch',
+        action: ''
+      }
+    ],
+    tags: ['bla', 'zag']
+  });
   const callTabProps = useCallTab({ dialog: '', start: '' });
   const [headerState, setHeaderState] = useState([] as Message[]);
 

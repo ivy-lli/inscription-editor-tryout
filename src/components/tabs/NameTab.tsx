@@ -3,6 +3,7 @@ import { Message, MessageUtil } from '../../data/message';
 import { NameTabData } from '../../data/name-tab';
 import CollapsiblePart from '../widgets/CollapsiblePart';
 import LabelInput from '../widgets/LabelInput';
+import Table from '../widgets/Table';
 import Tags from '../widgets/Tags';
 import './NameTab.css';
 
@@ -21,7 +22,8 @@ const NameTab = (props: { data: NameTabData; onChange: (change: NameTabData) => 
         <textarea className='input' id='description' value={props.data.description} onChange={handleDescChange} />
       </LabelInput>
       <LabelInput label='Means / Documents' htmlFor='documents'>
-        <textarea className='input' id='documents' defaultValue='todo: documents list' />
+        {/* <textarea className='input' id='documents' defaultValue='todo: documents list' /> */}
+        <Table />
       </LabelInput>
       <CollapsiblePart collapsibleLabel='Tags' defaultOpen={props.data.tags.length > 0}>
         <Tags tags={props.data.tags} onChange={handleTagsChange} />

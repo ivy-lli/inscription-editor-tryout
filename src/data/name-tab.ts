@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import { NameDoc } from './document';
 import { Message, MessageSeverity } from './message';
 import { TabState, useTabState } from './tab';
 
 export interface NameTabData {
   name: string;
   description: string;
+  documents: NameDoc[];
   tags: string[];
 }
 
