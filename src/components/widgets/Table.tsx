@@ -39,23 +39,32 @@ const Table = (props: { data: NameDoc[]; onChange: (change: NameDoc[]) => void }
 
   const columnHelper = createColumnHelper<NameDoc>();
 
-  const updateData = (index: number, id: string, value: string) => {
-    const change = { ...data[index], [id]: value };
-    data[index] = change;
-    // props.onChange(data);
-    setData(data);
+  const updateData = (rowIndex: number, columnId: string, value: string) => {
+    const newData = data.map((row, index) => {
+      if (index === rowIndex) {
+        return {
+          ...data[rowIndex]!,
+          [columnId]: value
+        };
+      }
+      return row;
+    });
+    props.onChange(newData);
+    setData(newData);
   };
 
   const addTableRow = () => {
-    data.push(EMPTY_NAME_DOC);
-    // props.onChange(data);
-    setData(props.data);
+    const newData = [...data];
+    newData.push(EMPTY_NAME_DOC);
+    props.onChange(newData);
+    setData(newData);
   };
 
   const removeTableRow = (index: number) => {
-    data.splice(index, 1);
-    // props.onChange(data);
-    setData(data);
+    const newData = [...data];
+    newData.splice(index, 1);
+    props.onChange(newData);
+    setData(newData);
   };
 
   const columns = [
