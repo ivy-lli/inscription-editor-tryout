@@ -9,3 +9,8 @@ export type NameDoc = {
   url: string;
   action: string;
 };
+
+export type Doc = {
+  description: string;
+  url: string;
+};

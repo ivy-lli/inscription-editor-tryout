@@ -13,11 +13,11 @@ import { useEffect, useReducer, useState } from 'react';
 import { EMPTY_NAME_DOC, NameDoc } from '../../data/document';
 import './Table.css';
 
-// declare module '@tanstack/react-table' {
-//   interface TableMeta<TData extends RowData> {
-//     updateData: (rowIndex: number, columnId: string, value: unknown) => void;
-//   }
-// }
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData extends RowData> {
+    updateData: (rowIndex: number, columnId: string, value: unknown) => void;
+  }
+}
 
 const EditableCell = (props: { info: CellContext<NameDoc, string>; updateData: (index: number, id: string, value: string) => void }) => {
   const initValue = props.info.getValue();
@@ -39,7 +39,7 @@ const Table = (props: { data: NameDoc[]; onChange: (change: NameDoc[]) => void }
 
   const columnHelper = createColumnHelper<NameDoc>();
 
-  const updateData = (rowIndex: number, columnId: string, value: string) => {
+  const updateData = (rowIndex: number, columnId: string, value: unknown) => {
     const newData = data.map((row, index) => {
       if (index === rowIndex) {
         return {
@@ -70,13 +70,13 @@ const Table = (props: { data: NameDoc[]; onChange: (change: NameDoc[]) => void }
   const columns = [
     columnHelper.accessor('description', {
       // cell: info => info.getValue(),
-      cell: info => <EditableCell info={info} updateData={updateData} />,
+      // cell: info => <EditableCell key={`${info.row.id}-${info.column.id}`} info={info} updateData={updateData} />,
       header: () => <span>Description</span>
     }),
     columnHelper.accessor(row => row.url, {
       id: 'url',
       // cell: info => info.getValue(),
-      cell: info => <EditableCell info={info} updateData={updateData} />,
+      // cell: info => <EditableCell key={`${info.row.id}-${info.column.id}`} info={info} updateData={updateData} />,
       header: () => <span>URL</span>
     }),
     columnHelper.accessor('action', {
@@ -101,10 +101,11 @@ const Table = (props: { data: NameDoc[]; onChange: (change: NameDoc[]) => void }
 
       // When the input is blurred, we'll call our table meta's updateData function
       const onBlur = () => {
-        const change = { ...props.data[index], [id]: value };
-        props.data[index] = change;
-        props.onChange(props.data);
-        // table.options.meta?.updateData(index, id, value);
+        // updateData(index, id, value as string);
+        // const change = { ...props.data[index], [id]: value };
+        // props.data[index] = change;
+        // props.onChange(props.data);
+        table.options.meta?.updateData(index, id, value);
       };
 
       // If the initialValue is changed external, sync it up with our state
@@ -121,7 +122,24 @@ const Table = (props: { data: NameDoc[]; onChange: (change: NameDoc[]) => void }
     data,
     columns,
     defaultColumn,
-    getCoreRowModel: getCoreRowModel()
+    getCoreRowModel: getCoreRowModel(),
+    meta: {
+      updateData: (rowIndex: number, columnId: string, value: unknown) => {
+        // Skip age index reset until after next rerender
+        setData(old =>
+          old.map((row, index) => {
+            if (index === rowIndex) {
+              return {
+                ...old[rowIndex]!,
+                [columnId]: value
+              };
+            }
+            return row;
+          })
+        );
+      }
+    },
+    debugTable: true
   });
 
   return (

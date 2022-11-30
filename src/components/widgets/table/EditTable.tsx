@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 
 //
@@ -17,16 +17,17 @@ import {
   RowData
 } from '@tanstack/react-table';
 import { makeData, Person } from './makeData';
+import { Doc } from '../../../data/document';
 
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
     updateData: (rowIndex: number, columnId: string, value: unknown) => void;
-    addRow: () => void;
+    // addRow: () => void;
   }
 }
 
 // Give our default column cell renderer editing superpowers!
-const defaultColumn: Partial<ColumnDef<Person>> = {
+const defaultColumn: Partial<ColumnDef<Doc>> = {
   cell: ({ getValue, row: { index }, column: { id }, table }) => {
     const initialValue = getValue();
     // We need to keep and update the state of the cell normally
@@ -44,75 +45,87 @@ const defaultColumn: Partial<ColumnDef<Person>> = {
       setValue(initialValue);
     }, [initialValue]);
 
-    return <input value={value as string} onChange={e => setValue(e.target.value)} onBlur={onBlur} />;
+    return <input className='input' value={value as string} onChange={e => setValue(e.target.value)} onBlur={onBlur} />;
   }
 };
 
-function useSkipper() {
-  const shouldSkipRef = React.useRef(true);
-  const shouldSkip = shouldSkipRef.current;
+// function useSkipper() {
+//   const shouldSkipRef = React.useRef(true);
+//   const shouldSkip = shouldSkipRef.current;
 
-  // Wrap a function with this to skip a pagination reset temporarily
-  const skip = React.useCallback(() => {
-    shouldSkipRef.current = false;
-  }, []);
+//   // Wrap a function with this to skip a pagination reset temporarily
+//   const skip = React.useCallback(() => {
+//     shouldSkipRef.current = false;
+//   }, []);
 
-  React.useEffect(() => {
-    shouldSkipRef.current = true;
-  });
+//   React.useEffect(() => {
+//     shouldSkipRef.current = true;
+//   });
 
-  return [shouldSkip, skip] as const;
-}
+//   return [shouldSkip, skip] as const;
+// }
 
-function EditTable() {
+function EditTable(props: { data: Doc[]; onChange: (change: Doc[]) => void }) {
   const rerender = React.useReducer(() => ({}), {})[1];
 
-  const columns = React.useMemo<ColumnDef<Person>[]>(
+  const columns = React.useMemo<ColumnDef<Doc>[]>(
     () => [
       {
-        header: 'Name',
-        footer: props => props.column.id,
-        columns: [
-          {
-            accessorKey: 'firstName',
-            footer: props => props.column.id
-          },
-          {
-            accessorFn: row => row.lastName,
-            id: 'lastName',
-            header: () => <span>Last Name</span>,
-            footer: props => props.column.id
-          }
-        ]
+        accessorKey: 'description',
+        header: () => <span>Description</span>,
+        footer: props => props.column.id
+      },
+      {
+        accessorFn: row => row.url,
+        id: 'url',
+        header: () => <span>URL</span>,
+        footer: props => props.column.id
       }
     ],
     []
   );
 
-  const [data, setData] = React.useState(() => makeData(2));
-  const refreshData = () => setData(() => makeData(2));
+  const [data, setData] = React.useState(() => props.data /*makeData(2)*/);
+  const refreshData = () => setData(() => props.data /*makeData(2)*/);
   const addRow = () =>
     setData(() => {
       const newData = [...data];
-      newData.push({ firstName: '', lastName: '' });
+      newData.push({ description: '', url: '' });
+      props.onChange(newData);
       return newData;
     });
 
-  const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
+  const removeTableRow = (index: number) => {
+    const newData = [...data];
+    newData.splice(index, 1);
+    props.onChange(newData);
+    setData(newData);
+  };
+
+  // const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
 
   const table = useReactTable({
     data,
     columns,
     defaultColumn,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    autoResetPageIndex,
+    // getFilteredRowModel: getFilteredRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
+    // autoResetPageIndex,
     // Provide our updateData function to our table meta
     meta: {
-      updateData: (rowIndex, columnId, value) => {
+      updateData: (rowIndex: number, columnId: string, value: unknown) => {
         // Skip age index reset until after next rerender
-        skipAutoResetPageIndex();
+        // skipAutoResetPageIndex();
+        data.map((row, index) => {
+          if (index === rowIndex) {
+            return {
+              ...data[rowIndex]!,
+              [columnId]: value
+            };
+          }
+          return row;
+        });
         setData(old =>
           old.map((row, index) => {
             if (index === rowIndex) {
@@ -124,21 +137,21 @@ function EditTable() {
             return row;
           })
         );
-      },
-      addRow: () => {
-        skipAutoResetPageIndex();
-        setData(old => {
-          old.push({ firstName: '', lastName: '' });
-          return old;
-        });
+        props.onChange(data);
       }
+      // addRow: () => {
+      //   skipAutoResetPageIndex();
+      //   setData(old => {
+      //     old.push({ firstName: '', lastName: '' });
+      //     return old;
+      //   });
+      // }
     },
     debugTable: true
   });
 
   return (
-    <div className='p-2'>
-      <div className='h-2' />
+    <div className='table'>
       <table>
         <thead>
           {table.getHeaderGroups().map(headerGroup => (
@@ -149,16 +162,19 @@ function EditTable() {
                     {header.isPlaceholder ? null : (
                       <div>
                         {flexRender(header.column.columnDef.header, header.getContext())}
-                        {header.column.getCanFilter() ? (
+                        {/* {header.column.getCanFilter() ? (
                           <div>
                             <Filter column={header.column} table={table} />
                           </div>
-                        ) : null}
+                        ) : null} */}
                       </div>
                     )}
                   </th>
                 );
               })}
+              <th key={`${headerGroup.id}-actions`} colSpan={2}>
+                Actions
+              </th>
             </tr>
           ))}
         </thead>
@@ -169,13 +185,28 @@ function EditTable() {
                 {row.getVisibleCells().map(cell => {
                   return <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>;
                 })}
+                <td key={`${row.id}-actions`}>
+                  <span className='action-buttons'>
+                    <button onClick={() => removeTableRow(row.index)}>🗑️</button>
+                    <button>🔍</button>
+                    <button>➡️</button>
+                  </span>
+                </td>
               </tr>
             );
           })}
         </tbody>
+        <tfoot>
+          <tr>
+            <th colSpan={3} className='add-row'>
+              <button onClick={addRow}>
+                <span className='add-row-plus'>+</span>
+              </button>
+            </th>
+          </tr>
+        </tfoot>
       </table>
-      <div className='h-2' />
-      <div className='flex items-center gap-2'>
+      {/* <div className='flex items-center gap-2'>
         <button className='border rounded p-1' onClick={() => table.setPageIndex(0)} disabled={!table.getCanPreviousPage()}>
           {'<<'}
         </button>
@@ -222,20 +253,22 @@ function EditTable() {
             </option>
           ))}
         </select>
-      </div>
-      <div>{table.getRowModel().rows.length} Rows</div>
-      <div>
-        <button onClick={() => rerender()}>Force Rerender</button>
-      </div>
-      <div>
-        <button onClick={() => refreshData()}>Refresh Data</button>
-      </div>
-      <div>
-        <button onClick={() => /*table.options.meta?.addRow()*/ addRow()}>Add Row</button>
-      </div>
+      </div> */}
+      {table.options.debugTable && (
+        <>
+          <div>{table.getRowModel().rows.length} Rows</div>
+          <div>
+            <button onClick={() => rerender()}>Force Rerender</button>
+          </div>
+          <div>
+            <button onClick={() => refreshData()}>Refresh Data</button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
+
 function Filter({ column, table }: { column: Column<any, any>; table: Table<any> }) {
   const firstValue = table.getPreFilteredRowModel().flatRows[0]?.getValue(column.id);
 

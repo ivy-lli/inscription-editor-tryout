@@ -29,6 +29,16 @@ export function useUserDialogEditor(): EditorProps {
         action: ''
       }
     ],
+    docs: [
+      {
+        description: 'Doc 1',
+        url: 'axonivy.com'
+      },
+      {
+        description: 'ivyTeam ❤️',
+        url: 'ivyteam.ch'
+      }
+    ],
     tags: ['bla', 'zag']
   });
   const callTabProps = useCallTab({ dialog: '', start: '' });

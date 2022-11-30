@@ -26,8 +26,14 @@ const NameTab = (props: { data: NameTabData; onChange: (change: NameTabData) => 
       </LabelInput>
       <LabelInput label='Means / Documents' htmlFor='documents'>
         {/* <textarea className='input' id='documents' defaultValue='todo: documents list' /> */}
-        <Table data={props.data.documents} onChange={handleDocChange} />
-        {/* <EditTable /> */}
+        {/* <Table data={props.data.documents} onChange={handleDocChange} /> */}
+        <EditTable
+          data={props.data.docs}
+          onChange={change => {
+            console.log(change);
+            props.onChange({ ...props.data, docs: change });
+          }}
+        />
       </LabelInput>
       <CollapsiblePart collapsibleLabel='Tags' defaultOpen={props.data.tags.length > 0}>
         <Tags tags={props.data.tags} onChange={handleTagsChange} />
