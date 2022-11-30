@@ -11,10 +11,13 @@
 .table thead tr th {
   padding: 10px;
   text-align: start;
+  font-size: 10px;
 }
 .table thead tr th:last-child {
   width: 4.5rem;
 }
+
+/* Table content */
 .table tbody tr td {
   padding: 12px;
   background: var(--table-row-bg);
@@ -26,6 +29,13 @@
 .table tbody tr td:last-child {
   border-top-right-radius: var(--border-radius);
   border-bottom-right-radius: var(--border-radius);
+}
+.table .input {
+  background-color: var(--table-row-bg);
+  padding: 0;
+}
+.table .input:focus {
+  background-color: var(--input-bg);
 }
 .table tbody .action-buttons {
   display: inline-flex;
@@ -46,6 +56,8 @@
   background-color: var(--button-bg);
   box-shadow: var(--focus-shadow);
 }
+
+/* Add row button */
 .table .add-row {
   background: var(--table-row-bg);
   border-radius: var(--border-radius);
