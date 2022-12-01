@@ -96,8 +96,8 @@ function EditTable(props: { data: Doc[]; onChange: (change: Doc[]) => void }) {
         setData(newData);
         props.onChange(newData);
       }
-    },
-    debugTable: true
+    }
+    // debugTable: true
   });
 
   return (
