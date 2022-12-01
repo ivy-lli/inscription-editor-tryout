@@ -117,7 +117,7 @@ function EditTable(props: { data: Doc[]; onChange: (change: Doc[]) => void }) {
       updateData: (rowIndex: number, columnId: string, value: unknown) => {
         // Skip age index reset until after next rerender
         // skipAutoResetPageIndex();
-        data.map((row, index) => {
+        const newData = data.map((row, index) => {
           if (index === rowIndex) {
             return {
               ...data[rowIndex]!,
@@ -126,18 +126,8 @@ function EditTable(props: { data: Doc[]; onChange: (change: Doc[]) => void }) {
           }
           return row;
         });
-        setData(old =>
-          old.map((row, index) => {
-            if (index === rowIndex) {
-              return {
-                ...old[rowIndex]!,
-                [columnId]: value
-              };
-            }
-            return row;
-          })
-        );
-        props.onChange(data);
+        setData(newData);
+        props.onChange(newData);
       }
       // addRow: () => {
       //   skipAutoResetPageIndex();
