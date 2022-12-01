@@ -2,10 +2,11 @@ import React from 'react';
 
 import './EditTable.css';
 
-import { Column, Table, ColumnDef, useReactTable, getCoreRowModel, flexRender, RowData } from '@tanstack/react-table';
+import { ColumnDef, useReactTable, getCoreRowModel, flexRender, RowData } from '@tanstack/react-table';
 import { Doc } from '../../../data/document';
 
 declare module '@tanstack/react-table' {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface TableMeta<TData extends RowData> {
     updateData: (rowIndex: number, columnId: string, value: unknown) => void;
   }
@@ -35,8 +36,6 @@ const defaultColumn: Partial<ColumnDef<Doc>> = {
 };
 
 function EditTable(props: { data: Doc[]; onChange: (change: Doc[]) => void }) {
-  const rerender = React.useReducer(() => ({}), {})[1];
-
   const columns = React.useMemo<ColumnDef<Doc>[]>(
     () => [
       {
