@@ -1,8 +1,10 @@
 import React from 'react';
+import { Doc } from '../../data/document';
 import { Message, MessageUtil } from '../../data/message';
 import { NameTabData } from '../../data/name-tab';
 import CollapsiblePart from '../widgets/CollapsiblePart';
 import LabelInput from '../widgets/LabelInput';
+import EditTable from '../widgets/table/EditTable';
 import Tags from '../widgets/Tags';
 import './NameTab.css';
 
@@ -10,6 +12,7 @@ const NameTab = (props: { data: NameTabData; onChange: (change: NameTabData) => 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => props.onChange({ ...props.data, name: event.target.value });
   const handleDescChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
     props.onChange({ ...props.data, description: event.target.value });
+  const handleDocChange = (change: Doc[]) => props.onChange({ ...props.data, docs: change });
   const handleTagsChange = (change: string[]) => props.onChange({ ...props.data, tags: change });
 
   return (
@@ -21,7 +24,7 @@ const NameTab = (props: { data: NameTabData; onChange: (change: NameTabData) => 
         <textarea className='input' id='description' value={props.data.description} onChange={handleDescChange} />
       </LabelInput>
       <LabelInput label='Means / Documents' htmlFor='documents'>
-        <textarea className='input' id='documents' defaultValue='todo: documents list' />
+        <EditTable data={props.data.docs} onChange={handleDocChange} />
       </LabelInput>
       <CollapsiblePart collapsibleLabel='Tags' defaultOpen={props.data.tags.length > 0}>
         <Tags tags={props.data.tags} onChange={handleTagsChange} />
