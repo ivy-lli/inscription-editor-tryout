@@ -2,7 +2,16 @@ import React from 'react';
 
 import './EditTable.css';
 
-import { ColumnDef, useReactTable, getCoreRowModel, flexRender, RowData, SortingState, getSortedRowModel } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+  RowData,
+  SortingState,
+  getSortedRowModel,
+  CellContext
+} from '@tanstack/react-table';
 import { Doc } from '../../../data/document';
 
 declare module '@tanstack/react-table' {
@@ -12,42 +21,32 @@ declare module '@tanstack/react-table' {
   }
 }
 
-// ToDo: try build a component
-// Give our default column cell renderer editing superpowers!
-const defaultColumn: Partial<ColumnDef<Doc>> = {
-  cell: ({ getValue, row: { index }, column: { id }, table }) => {
-    const initialValue = getValue();
-    // We need to keep and update the state of the cell normally
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [value, setValue] = React.useState(initialValue);
-
-    // When the input is blurred, we'll call our table meta's updateData function
-    const onBlur = () => {
-      table.options.meta?.updateData(index, id, value);
-    };
-
-    // If the initialValue is changed external, sync it up with our state
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    React.useEffect(() => {
-      setValue(initialValue);
-    }, [initialValue]);
-
-    return <input className='input' value={value as string} onChange={e => setValue(e.target.value)} onBlur={onBlur} />;
-  }
+const EditableCell = (props: { cell: CellContext<Doc, unknown> }) => {
+  const initialValue = props.cell.getValue();
+  const [value, setValue] = React.useState(initialValue);
+  const onBlur = () => {
+    props.cell.table.options.meta?.updateData(props.cell.row.index, props.cell.column.id, value);
+  };
+  React.useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+  return <input className='input' value={value as string} onChange={e => setValue(e.target.value)} onBlur={onBlur} />;
 };
 
-function EditTable(props: { data: Doc[]; onChange: (change: Doc[]) => void }) {
+const EditTable = (props: { data: Doc[]; onChange: (change: Doc[]) => void }) => {
   const columns = React.useMemo<ColumnDef<Doc>[]>(
     () => [
       {
         accessorKey: 'description',
         header: () => <span>Description</span>,
+        cell: cell => <EditableCell cell={cell} />,
         footer: props => props.column.id
       },
       {
         accessorFn: row => row.url,
         id: 'url',
         header: () => <span>URL</span>,
+        cell: cell => <EditableCell cell={cell} />,
         footer: props => props.column.id
       }
     ],
@@ -75,7 +74,6 @@ function EditTable(props: { data: Doc[]; onChange: (change: Doc[]) => void }) {
   const table = useReactTable({
     data,
     columns,
-    defaultColumn,
     state: {
       sorting
     },
@@ -97,7 +95,6 @@ function EditTable(props: { data: Doc[]; onChange: (change: Doc[]) => void }) {
         props.onChange(newData);
       }
     }
-    // debugTable: true
   });
 
   return (
@@ -166,6 +163,6 @@ function EditTable(props: { data: Doc[]; onChange: (change: Doc[]) => void }) {
       </table>
     </div>
   );
-}
+};
 
 export default EditTable;
