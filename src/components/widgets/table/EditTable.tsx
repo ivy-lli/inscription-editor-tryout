@@ -2,7 +2,7 @@ import React from 'react';
 
 import './EditTable.css';
 
-import { ColumnDef, useReactTable, getCoreRowModel, flexRender, RowData } from '@tanstack/react-table';
+import { ColumnDef, useReactTable, getCoreRowModel, flexRender, RowData, SortingState, getSortedRowModel } from '@tanstack/react-table';
 import { Doc } from '../../../data/document';
 
 declare module '@tanstack/react-table' {
@@ -55,6 +55,8 @@ function EditTable(props: { data: Doc[]; onChange: (change: Doc[]) => void }) {
   );
 
   const [data, setData] = React.useState(() => props.data);
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+
   const addRow = () =>
     setData(() => {
       const newData = [...data];
@@ -74,7 +76,12 @@ function EditTable(props: { data: Doc[]; onChange: (change: Doc[]) => void }) {
     data,
     columns,
     defaultColumn,
+    state: {
+      sorting
+    },
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
     meta: {
       updateData: (rowIndex: number, columnId: string, value: unknown) => {
         const newData = data.map((row, index) => {
@@ -89,24 +96,37 @@ function EditTable(props: { data: Doc[]; onChange: (change: Doc[]) => void }) {
         setData(newData);
         props.onChange(newData);
       }
-    }
-    // debugTable: true
+    },
+    debugTable: true
   });
 
   return (
-    <div className='table'>
-      <table>
+    <div className='edit-table'>
+      <table className='table'>
         <thead>
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map(header => {
                 return (
-                  <th key={header.id} colSpan={header.colSpan}>
-                    {header.isPlaceholder ? null : <div>{flexRender(header.column.columnDef.header, header.getContext())}</div>}
+                  <th className='table-column-header' key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder ? null : (
+                      <div
+                        {...{
+                          className: header.column.getCanSort() ? 'sortable-column' : '',
+                          onClick: header.column.getToggleSortingHandler()
+                        }}
+                      >
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {{
+                          asc: ' 🔼',
+                          desc: ' 🔽'
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
+                    )}
                   </th>
                 );
               })}
-              <th key={`${headerGroup.id}-actions`} colSpan={2}>
+              <th className='table-column-header' key={`${headerGroup.id}-actions`} colSpan={2}>
                 Actions
               </th>
             </tr>
@@ -117,9 +137,13 @@ function EditTable(props: { data: Doc[]; onChange: (change: Doc[]) => void }) {
             return (
               <tr key={row.id}>
                 {row.getVisibleCells().map(cell => {
-                  return <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>;
+                  return (
+                    <td className='table-cell' key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  );
                 })}
-                <td key={`${row.id}-actions`}>
+                <td className='table-cell' key={`${row.id}-actions`}>
                   <span className='action-buttons'>
                     <button onClick={() => removeTableRow(row.index)}>🗑️</button>
                     <button>🔍</button>
