@@ -12,6 +12,7 @@ declare module '@tanstack/react-table' {
   }
 }
 
+// ToDo: try build a component
 // Give our default column cell renderer editing superpowers!
 const defaultColumn: Partial<ColumnDef<Doc>> = {
   cell: ({ getValue, row: { index }, column: { id }, table }) => {
