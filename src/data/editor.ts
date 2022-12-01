@@ -17,18 +17,6 @@ export function useUserDialogEditor(): EditorProps {
   const nameTabProps = useNameTab({
     name: 'test name',
     description: 'test desc',
-    documents: [
-      {
-        description: 'Placeholder 1',
-        url: 'axonivy.com',
-        action: ''
-      },
-      {
-        description: 'Placeholder 2',
-        url: 'ivyteam.ch',
-        action: ''
-      }
-    ],
     docs: [
       {
         description: 'Doc 1',
